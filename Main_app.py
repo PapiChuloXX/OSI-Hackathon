@@ -1,8 +1,6 @@
 import tkinter as tk
 import requests
-import sunpos
-from Location import time_diff
-from timezonefinder import TimezoneFinder
+from GlobalIrraddiance import global_irridance
 
 class App:
     def __init__(self, master):
@@ -15,24 +13,27 @@ class App:
         self.entry_address = tk.Entry(master, width=50)
         self.entry_address.pack(fill="x", padx=10)
 
-        # Solar angle label and entry
-        self.label_solar_angle = tk.Label(master, text="Enter solar angle (degrees):", anchor="w")
-        self.label_solar_angle.pack(fill="x", padx=10, pady=10)
-        self.entry_solar_angle = tk.Entry(master, width=10)
-        self.entry_solar_angle.pack(fill="x", padx=10)
+
+        # area of solar panel label and entry
+        self.label_solar_area = tk.Label(master, text="Enter number of solar panels:", anchor="w")
+        self.label_solar_area.pack(fill="x", padx=10, pady=10)
+        self.entry_solar_area = tk.Entry(master, width=10)
+        self.entry_solar_area.pack(fill="x", padx=10)
 
         # Calculate button
         self.button = tk.Button(master, text="Calculate", command=self.calculate)
         self.button.pack(padx=10, pady=10)
 
         # Result label
+        self.result_text = tk.StringVar()
         self.label_result = tk.Label(master, text="", anchor="w")
         self.label_result.pack(fill="x", padx=10)
 
     def calculate(self):
         # Get address and solar angle from user input
+        self.result_text.set('')
         address = self.entry_address.get()
-        solar_angle = self.entry_solar_angle.get()
+        number = float(self.entry_solar_area.get())
         API_KEY = "AIzaSyAOlXE709gmbTW4gPyVGCxS33Px4pYlnGo"
         
         # Retrieve latitude and longitude using Google Maps API
@@ -48,18 +49,12 @@ class App:
             self.label_result.config(text="Error: Could not retrieve location")
             return
 
-        tf = TimezoneFinder()
-        timezone = tf.timezone_at(lng=lng, lat=lat)
-        # Display latitude and longitude in a text label
-        location = (lat, lng)
 
-        # Fourth of July, 2022 at 11:20 am MDT (-6 hours)
-        when = (2023, 4, 20, 19, 33, 0, time_diff(timezone))
-
-        azimuth, elevation = sunpos.sunpos(when, location, True)
-        result = f"{azimuth}, {elevation}"
+        Energy = global_irridance(lat,lng) * number
+        result = f"Your total energy for one day : {Energy/1000}KW"
         self.label_result.config(text=result)
 
+        
 
 root = tk.Tk()
 app = App(root)
