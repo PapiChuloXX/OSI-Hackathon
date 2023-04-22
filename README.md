@@ -1,5 +1,8 @@
 # Description
 
+CYB267 4A4D4C53 - Matt Pallansch, Lacen VanDenBerg, Simon Sanborn, Joshue Olaoye
+
+
 essentially we are going to be tracking the sun throughout any given point in the day 
 so that people know how to most efficiently place their solar items ( solar panels, solar chargers, etc.)
 
