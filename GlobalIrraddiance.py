@@ -3,6 +3,7 @@ import requests
 import time
 import geopy6
 # set API endpoint and parameters
+area = 20
 url = 'https://developer.nrel.gov/api/solar/solar_resource/v1.json'
 params = {
     'api_key': 'dAWs11PKS61dndfgYMwjHn2NSGBEAYzcnHOzHDsW',
@@ -25,7 +26,6 @@ if response.status_code == 200:
     for keys, values in datadict.items():
         valuelist.append((keys,values))
 
-    print(valuelist)
 else:
     print("Error:", response.status_code, response.text)
     
@@ -36,4 +36,3 @@ for months in valuelist:
 
     if something[1].lower() == months[0]:
         Gi = months[1]
-print(Gi)
